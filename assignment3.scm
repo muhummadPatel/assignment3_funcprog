@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functional Programming Assignment --- Fixing The World    ;;
 ;; 25/3/15                                                   ;;
-;; <Add your name and student number here>   
+;; Muhummad Patel --- PTLMUH006                              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -110,7 +110,7 @@
 ;; ;of the sub-cubes
 (define (recalculateOrientation orientation axis)
     (cond
-        [(= axis 0)
+        [(= axis 0) ;x-axis
             (if (> orientation 4)
                 orientation
                 (if(= orientation 4)
@@ -119,7 +119,7 @@
                 )
             )
         ]
-        [(= axis 1)
+        [(= axis 1) ;y-axis
             (if (or (= orientation 1) (= orientation 3))
                 orientation
                 (cond
@@ -130,7 +130,7 @@
                 )
             )
         ]
-        [(= axis 2)
+        [(= axis 2) ;z-axis
             (if (or (= orientation 2) (= orientation 4))
                 orientation
                 (cond
@@ -154,7 +154,37 @@
 ;rotations are performed using the left hand rule
 ;rotates left 4 cubes along x axis
 (define (rotateX ispositive state)
-	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
+	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
+	(if (eq? ispositive #t)
+        ;positive rotation
+        (let (  
+                ;keep track of the 4 octants being moved
+                (octant0 (list-ref (list-ref state 0) 0))
+                (orient0 (list-ref (list-ref state 0) 1))
+                (octant2 (list-ref (list-ref state 2) 0))
+                (orient2 (list-ref (list-ref state 2) 1))
+                (octant4 (list-ref (list-ref state 4) 0))
+                (orient4 (list-ref (list-ref state 4) 1))
+                (octant6 (list-ref (list-ref state 6) 0))
+                (orient6 (list-ref (list-ref state 6) 1))
+             )
+             
+            ;build up new state list after rotation
+            (list
+                (list octant4 (recalculateOrientation orient4 0))
+                (list-ref state 1)
+                (list octant0 (recalculateOrientation orient0 0))
+                (list-ref state 3)
+                (list octant6 (recalculateOrientation orient6 0))
+                (list-ref state 5)
+                (list octant2 (recalculateOrientation orient2 0))
+                (list-ref state 7)
+            )
+        )
+        
+        ;negative rotation
+	    (rotateX #t (rotateX #t (rotateX #t state)))
+	)
 )
 
 ;rotates bottom 4 cubes along y axis
