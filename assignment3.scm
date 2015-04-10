@@ -189,7 +189,37 @@
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
-   	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
+   	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
+   	(if (eq? ispositive #t)
+        ;positive rotation
+        (let (  
+                ;keep track of the 4 octants being moved
+                (octant4 (list-ref (list-ref state 4) 0))
+                (orient4 (list-ref (list-ref state 4) 1))
+                (octant5 (list-ref (list-ref state 5) 0))
+                (orient5 (list-ref (list-ref state 5) 1))
+                (octant6 (list-ref (list-ref state 6) 0))
+                (orient6 (list-ref (list-ref state 6) 1))
+                (octant7 (list-ref (list-ref state 7) 0))
+                (orient7 (list-ref (list-ref state 7) 1))
+             )
+             
+            ;build up new state list after rotation
+            (list
+                (list-ref state 0)
+                (list-ref state 1)
+                (list-ref state 2)
+                (list-ref state 3)
+                (list octant5 (recalculateOrientation orient5 1))
+                (list octant7 (recalculateOrientation orient7 1))
+                (list octant4 (recalculateOrientation orient4 1))
+                (list octant6 (recalculateOrientation orient6 1))
+            )
+        )
+        
+        ;negative rotation
+	    (rotateY #t (rotateY #t (rotateY #t state)))
+	)
 )
 
 ;rotates back 4 cubes along z axis
