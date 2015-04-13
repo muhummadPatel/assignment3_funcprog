@@ -171,19 +171,23 @@
              
             ;build up new state list after rotation
             (list
-                (list octant4 (recalculateOrientation orient4 0))
-                (list-ref state 1)
-                (list octant0 (recalculateOrientation orient0 0))
-                (list-ref state 3)
-                (list octant6 (recalculateOrientation orient6 0))
-                (list-ref state 5)
-                (list octant2 (recalculateOrientation orient2 0))
-                (list-ref state 7)
+                (list
+                    (list octant4 (recalculateOrientation orient4 0))
+                    (list-ref state 1)
+                    (list octant0 (recalculateOrientation orient0 0))
+                    (list-ref state 3)
+                    (list octant6 (recalculateOrientation orient6 0))
+                    (list-ref state 5)
+                    (list octant2 (recalculateOrientation orient2 0))
+                    (list-ref state 7)
+                )
+                
+                (list "x")
             )
         )
         
         ;negative rotation
-	    (rotateX #t (rotateX #t (rotateX #t state)))
+	    (rotateX #t (car (rotateX #t (car (rotateX #t state)))))
 	)
 )
 
