@@ -356,7 +356,58 @@
 
 ;finds all the states at a specific depth
 (define (genStates n state moves)
-    ((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) ((x) (X) (y) (Y) (z) (Z))) ;;; *TODO* ;;;
+    ;(
+    ;    (
+    ;        ((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) 
+    ;        ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) 
+    ;        ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) 
+    ;        ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) 
+    ;        ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) 
+    ;        ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))
+    ;    ) 
+    ;    
+    ;    (
+    ;        (x) (X) (y) (Y) (z) (Z)
+    ;    )
+    ;) ;;; *TODO* ;;;
+    
+    (if (eq? n 1)
+    
+        ;base case, just return a list of the next possible moves
+        (generateSuccessorStates state moves)
+        
+        ;recursive step. call getStates on all child states
+        (let (
+                (childStates (generateSuccessorStates state moves))
+             )
+        
+            ;body
+            (let (
+                    (state1 (list-ref (list-ref childStates 0) 0))
+                    (moves1 (list-ref (list-ref childStates 1) 0))
+                    (state2 (list-ref (list-ref childStates 0) 1))
+                    (moves2 (list-ref (list-ref childStates 1) 1))
+                    (state3 (list-ref (list-ref childStates 0) 2))
+                    (moves3 (list-ref (list-ref childStates 1) 2))
+                    (state4 (list-ref (list-ref childStates 0) 3))
+                    (moves4 (list-ref (list-ref childStates 1) 3))
+                    (state5 (list-ref (list-ref childStates 0) 4))
+                    (moves5 (list-ref (list-ref childStates 1) 4))
+                    (state6 (list-ref (list-ref childStates 0) 5))
+                    (moves6 (list-ref (list-ref childStates 1) 5))
+                 )
+                 
+                 (list
+                    (genStates (- n 1) state1 moves1)
+                    (genStates (- n 1) state2 moves2)
+                    (genStates (- n 1) state3 moves3)
+                    (genStates (- n 1) state4 moves4)
+                    (genStates (- n 1) state5 moves5)
+                    (genStates (- n 1) state6 moves6)
+                 )
+            )
+        )
+    )
 )
 ;----------------------------------------------------------
 
