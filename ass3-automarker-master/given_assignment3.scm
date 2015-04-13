@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functional Programming Assignment --- Fixing The World    ;;
 ;; 25/3/15                                                   ;;
-;; Muhummad Patel --- PTLMUH006                              ;;
+;; <Add your name and student number here>   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -110,7 +110,7 @@
 ;; ;of the sub-cubes
 (define (recalculateOrientation orientation axis)
     (cond
-        [(= axis 0) ;x-axis
+        [(= axis 0)
             (if (> orientation 4)
                 orientation
                 (if(= orientation 4)
@@ -119,7 +119,7 @@
                 )
             )
         ]
-        [(= axis 1) ;y-axis
+        [(= axis 1)
             (if (or (= orientation 1) (= orientation 3))
                 orientation
                 (cond
@@ -130,7 +130,7 @@
                 )
             )
         ]
-        [(= axis 2) ;z-axis
+        [(= axis 2)
             (if (or (= orientation 2) (= orientation 4))
                 orientation
                 (cond
@@ -154,119 +154,17 @@
 ;rotations are performed using the left hand rule
 ;rotates left 4 cubes along x axis
 (define (rotateX ispositive state)
-	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
-	(if (eq? ispositive #t)
-        ;positive rotation
-        (let (  
-                ;keep track of the 4 octants being moved
-                (octant0 (list-ref (list-ref state 0) 0))
-                (orient0 (list-ref (list-ref state 0) 1))
-                (octant2 (list-ref (list-ref state 2) 0))
-                (orient2 (list-ref (list-ref state 2) 1))
-                (octant4 (list-ref (list-ref state 4) 0))
-                (orient4 (list-ref (list-ref state 4) 1))
-                (octant6 (list-ref (list-ref state 6) 0))
-                (orient6 (list-ref (list-ref state 6) 1))
-             )
-             
-            ;build up new state list after rotation
-            (list
-                (list
-                    (list octant4 (recalculateOrientation orient4 0))
-                    (list-ref state 1)
-                    (list octant0 (recalculateOrientation orient0 0))
-                    (list-ref state 3)
-                    (list octant6 (recalculateOrientation orient6 0))
-                    (list-ref state 5)
-                    (list octant2 (recalculateOrientation orient2 0))
-                    (list-ref state 7)
-                )
-                
-                (list "x")
-            )
-        )
-        
-        ;negative rotation
-	    (rotateX #t (car (rotateX #t (car (rotateX #t state)))))
-	)
+	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
 )
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
-   	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
-   	(if (eq? ispositive #t)
-        ;positive rotation
-        (let (  
-                ;keep track of the 4 octants being moved
-                (octant4 (list-ref (list-ref state 4) 0))
-                (orient4 (list-ref (list-ref state 4) 1))
-                (octant5 (list-ref (list-ref state 5) 0))
-                (orient5 (list-ref (list-ref state 5) 1))
-                (octant6 (list-ref (list-ref state 6) 0))
-                (orient6 (list-ref (list-ref state 6) 1))
-                (octant7 (list-ref (list-ref state 7) 0))
-                (orient7 (list-ref (list-ref state 7) 1))
-             )
-             
-            ;build up new state list after rotation
-            (list
-                (list
-                    (list-ref state 0)
-                    (list-ref state 1)
-                    (list-ref state 2)
-                    (list-ref state 3)
-                    (list octant5 (recalculateOrientation orient5 1))
-                    (list octant7 (recalculateOrientation orient7 1))
-                    (list octant4 (recalculateOrientation orient4 1))
-                    (list octant6 (recalculateOrientation orient6 1))
-                )
-                
-                (list "y")
-            )
-        )
-        
-        ;negative rotation
-	    (rotateY #t (car (rotateY #t (car (rotateY #t state)))))
-	)
+   	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
 )
 
 ;rotates back 4 cubes along z axis
 (define (rotateZ ispositive state)
-	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
-	(if (eq? ispositive #t)
-        ;positive rotation
-        (let (  
-                ;keep track of the 4 octants being moved
-                (octant0 (list-ref (list-ref state 0) 0))
-                (orient0 (list-ref (list-ref state 0) 1))
-                (octant1 (list-ref (list-ref state 1) 0))
-                (orient1 (list-ref (list-ref state 1) 1))
-                (octant4 (list-ref (list-ref state 4) 0))
-                (orient4 (list-ref (list-ref state 4) 1))
-                (octant5 (list-ref (list-ref state 5) 0))
-                (orient5 (list-ref (list-ref state 5) 1))
-             )
-             
-            ;build up new state list after rotation
-            (list
-                (list
-                    (list octant1 (recalculateOrientation orient1 2))
-                    (list octant5 (recalculateOrientation orient5 2))
-                    (list-ref state 2)
-                    (list-ref state 3)
-                    (list octant0 (recalculateOrientation orient0 2))
-                    (list octant4 (recalculateOrientation orient4 2))
-                    (list-ref state 6)
-                    (list-ref state 7)
-                )
-                
-                (list "z")
-            )
-        )
-        
-        ;negative rotation
-	    (rotateZ #t (car (rotateZ #t (car (rotateZ #t state)))))
-	)
+	(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
 )
 
 ;; ;helper for rotate function
@@ -299,40 +197,17 @@
 ;-----------------------QUESTION 1.2-----------------------
 ;generates the successor states of the current given rubiks cube state
 (define (generateSuccessorStates state prevMoves) 
-    ;(list
-    ;    (list
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;    )
-    ;    '(("x") ("X") ("y") ("Y") ("z") ("Z"))
-    ;) ;;; *TODO* ;;; 
     (list
         (list
-            ;generate list of states from every possible from curr state
-            (rotate "x" state)
-            (rotate "X" state)
-            (rotate "y" state)
-            (rotate "Y" state)
-            (rotate "z" state)
-            (rotate "Z" state)
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
         )
-        
-        (list
-            ;update prevmoves
-            ;TODO lists returned in wrong format
-            ;need to actually append to prevmoves without mutating it
-            (append prevMoves '("x"))
-            (append prevMoves '("X"))
-            (append prevMoves '("y"))
-            (append prevMoves '("Y"))
-            (append prevMoves '("z"))
-            (append prevMoves '("Z"))
-        )
-    )
+        '(("x") ("X") ("y") ("Y") ("z") ("Z"))
+    ) ;;; *TODO* ;;; 
 )
 
 ;; ;TESTS
@@ -356,79 +231,7 @@
 
 ;finds all the states at a specific depth
 (define (genStates n state moves)
-    ;(
-    ;    (
-    ;        ((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) 
-    ;        ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) 
-    ;        ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) 
-    ;        ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) 
-    ;        ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) 
-    ;        ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))
-    ;    ) 
-    ;    
-    ;    (
-    ;        (x) (X) (y) (Y) (z) (Z)
-    ;    )
-    ;) ;;; *TODO* ;;;
-    
-    (if (eq? n 0)
-    
-        ;base case, just return a list of the next possible moves
-        (list (list state) (list moves))
-        
-        ;recursive step. call getStates on all child states
-        (let (
-                (childStates (generateSuccessorStates state moves))
-             )
-        
-            ;body
-            (let (
-                    (state1 (list-ref (list-ref childStates 0) 0))
-                    (moves1 (list-ref (list-ref childStates 1) 0))
-                    (state2 (list-ref (list-ref childStates 0) 1))
-                    (moves2 (list-ref (list-ref childStates 1) 1))
-                    (state3 (list-ref (list-ref childStates 0) 2))
-                    (moves3 (list-ref (list-ref childStates 1) 2))
-                    (state4 (list-ref (list-ref childStates 0) 3))
-                    (moves4 (list-ref (list-ref childStates 1) 3))
-                    (state5 (list-ref (list-ref childStates 0) 4))
-                    (moves5 (list-ref (list-ref childStates 1) 4))
-                    (state6 (list-ref (list-ref childStates 0) 5))
-                    (moves6 (list-ref (list-ref childStates 1) 5))
-                 )
-                 
-                 (let (
-                        (res1 (genStates (- n 1) state1 moves1))
-                        (res2 (genStates (- n 1) state2 moves2))
-                        (res3 (genStates (- n 1) state3 moves3))
-                        (res4 (genStates (- n 1) state4 moves4))
-                        (res5 (genStates (- n 1) state5 moves5))
-                        (res6 (genStates (- n 1) state6 moves6))
-                      )
-                      
-                      (list
-                        (append
-                            (car res1)
-                            (car res2)
-                            (car res3)
-                            (car res4)
-                            (car res5)
-                            (car res6)
-                        )
-                        
-                        (append
-                            (cadr res1)
-                            (cadr res2)
-                            (cadr res3)
-                            (cadr res4)
-                            (cadr res5)
-                            (cadr res6)
-                        )
-                      )
-                 )
-            )
-        )
-    )
+    '((((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))) ((x) (X) (y) (Y) (z) (Z))) ;;; *TODO* ;;;
 )
 ;----------------------------------------------------------
 
