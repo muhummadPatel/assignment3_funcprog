@@ -325,13 +325,12 @@
             ;update prevmoves
             ;TODO lists returned in wrong format
             ;need to actually append to prevmoves without mutating it
-            
-            (list prevMoves "x")
-            (list prevMoves "X")
-            (list prevMoves "y")
-            (list prevMoves "Y")
-            (list prevMoves "z")
-            (list prevMoves "Z")
+            (append prevMoves '("x"))
+            (append prevMoves '("X"))
+            (append prevMoves '("y"))
+            (append prevMoves '("Y"))
+            (append prevMoves '("z"))
+            (append prevMoves '("Z"))
         )
     )
 )
