@@ -232,7 +232,7 @@
 
 ;rotates back 4 cubes along z axis
 (define (rotateZ ispositive state)
-	;;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
+	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
 	(if (eq? ispositive #t)
         ;positive rotation
         (let (  
@@ -299,17 +299,40 @@
 ;-----------------------QUESTION 1.2-----------------------
 ;generates the successor states of the current given rubiks cube state
 (define (generateSuccessorStates state prevMoves) 
+    ;(list
+    ;    (list
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+    ;    )
+    ;    '(("x") ("X") ("y") ("Y") ("z") ("Z"))
+    ;) ;;; *TODO* ;;; 
     (list
         (list
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-            '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
+            ;generate list of states from every possible from curr state
+            (rotate "x" state)
+            (rotate "X" state)
+            (rotate "y" state)
+            (rotate "Y" state)
+            (rotate "z" state)
+            (rotate "Z" state)
         )
-        '(("x") ("X") ("y") ("Y") ("z") ("Z"))
-    ) ;;; *TODO* ;;; 
+        
+        (list
+            ;update prevmoves
+            ;TODO lists returned in wrong format
+            ;need to actually append to prevmoves without mutating it
+            (list prevMoves "x")
+            (list prevMoves "X")
+            (list prevMoves "y")
+            (list prevMoves "Y")
+            (list prevMoves "z")
+            (list prevMoves "Z")
+        )
+    )
 )
 
 ;; ;TESTS
