@@ -187,6 +187,7 @@
         )
         
         ;negative rotation
+        ;TODO return big x at the end
 	    (rotateX #t (car (rotateX #t (car (rotateX #t state)))))
 	)
 )
@@ -226,6 +227,7 @@
         )
         
         ;negative rotation
+        ;TODO return bigy at the end
 	    (rotateY #t (car (rotateY #t (car (rotateY #t state)))))
 	)
 )
@@ -265,6 +267,7 @@
         )
         
         ;negative rotation
+        ;TODO return big z at the end
 	    (rotateZ #t (car (rotateZ #t (car (rotateZ #t state)))))
 	)
 )
@@ -434,9 +437,43 @@
 
 
 ;---------------------------QUESTION 3.1-----------------------
+;returns the index of the solution in states or -1 if there is none
+(define (solvedStateIndex states solved)
+    (if (null? states)
+        -1
+        (if (not (eq? (member (car states) solved) #f))
+            0
+            (let (
+                    (result (solvedStateIndex (cdr states) solved))
+                 )
+                 
+                (if (= result -1)
+                    -1
+                    
+                    (+ 1 result)
+                )
+            )
+        )
+    )
+)
+; (solvedStateIndex 'a '(a b c d e f g)) == 0
+; (solvedStateIndex 'd '(a b c d e f g)) == 3
+; (solvedStateIndex '(a) '((a) b c d e f g)) == 0
+; (solvedStateIndex '(d) '(a b c (d) e f g)) == 3
+; (solvedStateIndex '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) ((3 1) (1 1) (4 1) (2 1) (7 3) (5 3) (9 3) (6 3)) ((4 1) (3 1) (2 1) (1 1) (8 3) (7 3) (9 3) (5 3)) ((2 1) (4 1) (1 1) (3 1) (6 3) (8 3) (9 3) (7 3)) ((5 5) (1 6) (7 5) (3 6) (6 5) (2 6) (9 5) (4 6)) ((7 5) (3 6) (8 5) (4 6) (5 5) (1 6) (9 5) (2 6)) ((8 5) (4 6) (6 5) (2 6) (7 5) (3 6) (9 5) (1 6)) ((6 5) (2 6) (5 5) (1 6) (8 5) (4 6) (9 5) (3 6)) ((2 5) (6 6) (4 5) (8 6) (1 5) (5 6) (9 5) (7 6)) ((4 5) (8 6) (3 5) (7 6) (2 5) (6 6) (1 5) (5 6)) ((3 5) (7 6) (1 5) (5 6) (4 5) (8 6) (9 5) (6 6)) ((1 5) (5 6) (2 5) (6 6) (3 5) (7 6) (9 5) (8 6))) solvedStates) == 9
+; (solvedStateIndex '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) solvedStates) == -1
+
 ;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
 (define (solveCube solved initial n)
-    '("Z", "Y", "X") ;;; *TODO* ;;;
+    ;'("Z", "Y", "X") ;;; *TODO* ;;;
+    ;(genStates n initial '())
+    
+    (let (
+            (statesAtDepth (genStates n initial '()))
+         )
+        
+        5
+    )
 )
 ;---------------------------------------------------------------------
 ;TESTS
