@@ -102,6 +102,8 @@
         ((6 2) (8 2) (2 4) (4 4) (5 2) (7 2) (1 4) (3 4))
     )
 )
+
+(define initialState '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))
 ;; ;-----------------------------------------------------
 
 
@@ -471,8 +473,23 @@
     (let (
             (statesAtDepth (genStates n initial '()))
          )
-        
-        5
+         ;statesAtDepth
+         (let
+            (
+                (solutionIndex (solvedStateIndex (list-ref statesAtDepth 0) solvedStates))
+                (movesList (list-ref statesAtDepth 1))
+            )
+            
+            ;(list-ref movesList solutionIndex)
+            (if (not (eq? solutionIndex -1))
+                ;we have found a valid solution at solutionIndex
+                (list-ref movesList solutionIndex)
+                
+                ;no Solution at this depth, so check next step
+                ;TODO maybe just send in this step as initial with n still = 0?
+                (solveCube solved initial (+ n 1))
+            )
+         )
     )
 )
 ;---------------------------------------------------------------------
