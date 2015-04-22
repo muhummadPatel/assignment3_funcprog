@@ -25,5 +25,5 @@ The solution may be run in a command-line/terminal window as follows:
 >Navigate to the directory containing this file and the assignment3.scm file
 >Type 'gsi' and enter to run the Gambit Scheme interpreter
 >Type '(load "Assignment3.scm")' to load the code in Assignment3.scm
->Type run the solveCube procedure with a state list for a shufled cube and n=0
+>Run the solveCube procedure with a state list for a shufled cube and n=0
 >You should then receive a list of moves to do in order to solve the cube
