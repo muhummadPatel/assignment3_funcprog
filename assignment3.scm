@@ -31,7 +31,7 @@
 ;; ; (print (not (= 0 (index '(1 2 3 4 5) 0))) "\n")
 
 ;; ;checks if an item is in a list
-;; You might want to do a more efficient version of this.
+;; ;You might want to do a more efficient version of this.
 ;;
 (define (in item lst)
     (if (null? lst)
@@ -68,7 +68,7 @@
 ;; ;-----------------------------------------------------------
 
 
-;---------------------SOLVED STATES------------------------
+;---------------------SOLVED STATES & INITIAL STATE------------
 ;solved states of a 2x2x2 rubiks cube
 (define solvedStates
     '(  ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
@@ -103,6 +103,7 @@
     )
 )
 
+;initial state of a cube (to make testing easier)
 (define initialState '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)))
 ;; ;-----------------------------------------------------
 
@@ -156,9 +157,8 @@
 ;rotations are performed using the left hand rule
 ;rotates left 4 cubes along x axis
 (define (rotateX ispositive state)
-	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "x")) ;;; *TODO* ;;;
 	(if (eq? ispositive #t)
-        ;positive rotation
+        ;positive rotation required
         (let (  
                 ;keep track of the 4 octants being moved
                 (octant0 (list-ref (list-ref state 0) 0))
@@ -188,17 +188,22 @@
             )
         )
         
-        ;negative rotation
-        ;TODO return big x at the end
-	    (rotateX #t (car (rotateX #t (car (rotateX #t state)))))
+        ;negative rotation required
+	    (list 
+	        ;negaative rotation is the same as 3 positive rotations
+	        (car (rotateX #t (car (rotateX #t (car (rotateX #t state))))))
+	        (list "X")
+        )
 	)
 )
+;; ;TESTS
+;; ; (print (equal? (rotateX #t initialState) '(((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) ("x"))) "\n")
+;; ; (print (equal? (rotateX #f initialState) '(((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) ("X"))) "\n")
 
 ;rotates bottom 4 cubes along y axis
 (define (rotateY ispositive state)
-   	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "y")) ;;; *TODO* ;;;
    	(if (eq? ispositive #t)
-        ;positive rotation
+        ;positive rotation required
         (let (  
                 ;keep track of the 4 octants being moved
                 (octant4 (list-ref (list-ref state 4) 0))
@@ -228,17 +233,22 @@
             )
         )
         
-        ;negative rotation
-        ;TODO return bigy at the end
-	    (rotateY #t (car (rotateY #t (car (rotateY #t state)))))
+        ;negative rotation required
+        (list
+            ;negative rotation is the same thing as 3 positive rotations
+	        (car (rotateY #t (car (rotateY #t (car (rotateY #t state))))))
+	        (list "Y")
+        )
 	)
 )
+;; ;TESTS
+;; ; (print (equal? (rotateY #t initialState) '(((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) ("y"))) "\n")
+;; ; (print (equal? (rotateY #f initialState) '(((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) ("Y"))) "\n")
 
 ;rotates back 4 cubes along z axis
 (define (rotateZ ispositive state)
-	;(list '((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) (list "z")) ;;; *TODO* ;;;
 	(if (eq? ispositive #t)
-        ;positive rotation
+        ;positive rotationrequired
         (let (  
                 ;keep track of the 4 octants being moved
                 (octant0 (list-ref (list-ref state 0) 0))
@@ -268,11 +278,16 @@
             )
         )
         
-        ;negative rotation
-        ;TODO return big z at the end
-	    (rotateZ #t (car (rotateZ #t (car (rotateZ #t state)))))
+        ;negative rotation required
+        (list
+	        (car (rotateZ #t (car (rotateZ #t (car (rotateZ #t state))))))
+	        (list "Z")
+	    )
 	)
 )
+;; ;TESTS
+;; ; (print (equal? (rotateZ #t initialState) '(((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) ("z"))) "\n")
+;; ; (print (equal? (rotateZ #t initialState) '(((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3)) ("Z"))) "\n")
 
 ;; ;helper for rotate function
 (define (rotateHelper char state)
@@ -304,20 +319,9 @@
 ;-----------------------QUESTION 1.2-----------------------
 ;generates the successor states of the current given rubiks cube state
 (define (generateSuccessorStates state prevMoves) 
-    ;(list
-    ;    (list
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;        '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))
-    ;    )
-    ;    '(("x") ("X") ("y") ("Y") ("z") ("Z"))
-    ;) ;;; *TODO* ;;; 
     (list
         (list
-            ;generate list of states from every possible from curr state
+            ;generate list of states from every move from current state
             (rotate "x" state)
             (rotate "X" state)
             (rotate "y" state)
@@ -327,9 +331,7 @@
         )
         
         (list
-            ;update prevmoves
-            ;TODO lists returned in wrong format
-            ;need to actually append to prevmoves without mutating it
+            ;include the move we just did in the history section of the list
             (append prevMoves '("x"))
             (append prevMoves '("X"))
             (append prevMoves '("y"))
@@ -339,7 +341,6 @@
         )
     )
 )
-
 ;; ;TESTS
 ;; ; (print (equal? (generateSuccessorStates '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) '())
 ;; ;         (list
@@ -361,21 +362,6 @@
 
 ;finds all the states at a specific depth
 (define (genStates n state moves)
-    ;(
-    ;    (
-    ;        ((5 4) (2 1) (1 2) (4 1) (7 4) (6 3) (3 2) (8 3)) 
-    ;        ((3 4) (2 1) (7 2) (4 1) (1 4) (6 3) (5 2) (8 3)) 
-    ;        ((1 1) (2 1) (3 1) (4 1) (6 3) (8 3) (5 3) (7 3)) 
-    ;        ((1 1) (2 1) (3 1) (4 1) (7 3) (5 3) (8 3) (6 3)) 
-    ;        ((2 5) (6 6) (3 1) (4 1) (1 5) (5 6) (7 3) (8 3)) 
-    ;        ((5 5) (1 6) (3 1) (4 1) (6 5) (2 6) (7 3) (8 3))
-    ;    ) 
-    ;    
-    ;    (
-    ;        (x) (X) (y) (Y) (z) (Z)
-    ;    )
-    ;) ;;; *TODO* ;;;
-    
     (if (eq? n 0)
     
         ;base case, just return a list of the next possible moves
@@ -385,8 +371,9 @@
         (let (
                 (childStates (generateSuccessorStates state moves))
              )
-        
-            ;body
+            
+            ;all this down here is just to make sure that the returned list is
+            ;formatted the right way.
             (let (
                     (state1 (list-ref (list-ref childStates 0) 0))
                     (moves1 (list-ref (list-ref childStates 1) 0))
@@ -435,65 +422,88 @@
         )
     )
 )
+;; ;TESTS
+;; ; (print (equal? (genStates 0 initialState '()) '((((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) (()))) "\n")
+;; ; (print (equal? (genStates 2 initialState '()) '((((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((5 4) (2 1) (1 2) (4 1) (6 3) (8 3) (7 5) (3 6)) ((5 4) (2 1) (1 2) (4 1) (3 5) (7 6) (8 3) (6 3)) ((2 5) (6 6) (1 2) (4 1) (5 4) (7 4) (3 2) (8 3)) ((7 4) (5 4) (1 2) (4 1) (6 5) (2 6) (3 2) (8 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((7 1) (2 1) (5 1) (4 1) (3 3) (6 3) (1 3) (8 3)) ((3 4) (2 1) (7 2) (4 1) (6 3) (8 3) (1 5) (5 6)) ((3 4) (2 1) (7 2) (4 1) (5 5) (1 6) (8 3) (6 3)) ((2 5) (6 6) (7 2) (4 1) (3 4) (1 4) (5 2) (8 3)) ((1 4) (3 4) (7 2) (4 1) (6 5) (2 6) (5 2) (8 3)) ((6 4) (2 1) (1 2) (4 1) (5 4) (8 3) (3 2) (7 3)) ((3 4) (2 1) (5 2) (4 1) (1 4) (8 3) (6 2) (7 3)) ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((2 5) (8 6) (3 1) (4 1) (1 5) (6 6) (5 3) (7 3)) ((6 5) (1 6) (3 1) (4 1) (8 5) (2 6) (5 3) (7 3)) ((7 4) (2 1) (1 2) (4 1) (8 4) (5 3) (3 2) (6 3)) ((3 4) (2 1) (8 2) (4 1) (1 4) (5 3) (7 2) (6 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((1 1) (2 1) (3 1) (4 1) (8 3) (7 3) (6 3) (5 3)) ((2 5) (5 6) (3 1) (4 1) (1 5) (7 6) (8 3) (6 3)) ((7 5) (1 6) (3 1) (4 1) (5 5) (2 6) (8 3) (6 3)) ((1 5) (6 6) (2 5) (4 1) (7 4) (5 6) (3 2) (8 3)) ((3 4) (6 6) (7 2) (4 1) (2 5) (5 6) (1 5) (8 3)) ((2 5) (6 6) (3 1) (4 1) (5 4) (8 3) (1 2) (7 3)) ((2 5) (6 6) (3 1) (4 1) (7 3) (1 4) (8 3) (5 2)) ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((6 5) (1 6) (5 5) (4 1) (7 4) (2 6) (3 2) (8 3)) ((3 4) (1 6) (7 2) (4 1) (5 5) (2 6) (6 5) (8 3)) ((5 5) (1 6) (3 1) (4 1) (2 4) (8 3) (6 2) (7 3)) ((5 5) (1 6) (3 1) (4 1) (7 3) (6 4) (8 3) (2 2)) ((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((6 1) (5 1) (3 1) (4 1) (2 3) (1 3) (7 3) (8 3)))(("x" "x") ("x" "X") ("x" "y") ("x" "Y") ("x" "z") ("x" "Z") ("X" "x") ("X" "X") ("X" "y") ("X" "Y") ("X" "z") ("X" "Z") ("y" "x") ("y" "X") ("y" "y") ("y" "Y") ("y" "z") ("y" "Z") ("Y" "x") ("Y" "X") ("Y" "y") ("Y" "Y") ("Y" "z") ("Y" "Z") ("z" "x") ("z" "X") ("z" "y") ("z" "Y") ("z" "z") ("z" "Z") ("Z" "x") ("Z" "X") ("Z" "y") ("Z" "Y") ("Z" "z") ("Z" "Z")))) "\n")
 ;----------------------------------------------------------
 
 
 ;---------------------------QUESTION 3.1-----------------------
-;returns the index of the solution in states or -1 if there is none
+
+;Helper function. Returns the index of the solution in states or -1 if there is none
 (define (solvedStateIndex states solved)
     (if (null? states)
+        ; if the states list passed in is null, return -1 right away (no solution in the null list)
         -1
+        
+        ;state list not null, so look for a solution
         (if (not (eq? (member (car states) solved) #f))
+            ;first item of states list is solution, so return 0
             0
+            
+            ;recursive step
             (let (
                     (result (solvedStateIndex (cdr states) solved))
                  )
                  
+                ;check if solution was found
                 (if (= result -1)
+                    ;solution was not found in the rest of the list, so keep sending -1 up the stack
                     -1
                     
+                    ;solution was found, so add 1 to the index each time as it unwinds the stack
                     (+ 1 result)
                 )
             )
         )
     )
 )
-; (solvedStateIndex 'a '(a b c d e f g)) == 0
-; (solvedStateIndex 'd '(a b c d e f g)) == 3
-; (solvedStateIndex '(a) '((a) b c d e f g)) == 0
-; (solvedStateIndex '(d) '(a b c (d) e f g)) == 3
-; (solvedStateIndex '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) ((3 1) (1 1) (4 1) (2 1) (7 3) (5 3) (9 3) (6 3)) ((4 1) (3 1) (2 1) (1 1) (8 3) (7 3) (9 3) (5 3)) ((2 1) (4 1) (1 1) (3 1) (6 3) (8 3) (9 3) (7 3)) ((5 5) (1 6) (7 5) (3 6) (6 5) (2 6) (9 5) (4 6)) ((7 5) (3 6) (8 5) (4 6) (5 5) (1 6) (9 5) (2 6)) ((8 5) (4 6) (6 5) (2 6) (7 5) (3 6) (9 5) (1 6)) ((6 5) (2 6) (5 5) (1 6) (8 5) (4 6) (9 5) (3 6)) ((2 5) (6 6) (4 5) (8 6) (1 5) (5 6) (9 5) (7 6)) ((4 5) (8 6) (3 5) (7 6) (2 5) (6 6) (1 5) (5 6)) ((3 5) (7 6) (1 5) (5 6) (4 5) (8 6) (9 5) (6 6)) ((1 5) (5 6) (2 5) (6 6) (3 5) (7 6) (9 5) (8 6))) solvedStates) == 9
-; (solvedStateIndex '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) solvedStates) == -1
+;; ;TESTS
+;; ; (solvedStateIndex 'a '(a b c d e f g)) == 0
+;; ; (solvedStateIndex 'd '(a b c d e f g)) == 3
+;; ; (solvedStateIndex '(a) '((a) b c d e f g)) == 0
+;; ; (solvedStateIndex '(d) '(a b c (d) e f g)) == 3
+;; ; (solvedStateIndex '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) ((3 1) (1 1) (4 1) (2 1) (7 3) (5 3) (9 3) (6 3)) ((4 1) (3 1) (2 1) (1 1) (8 3) (7 3) (9 3) (5 3)) ((2 1) (4 1) (1 1) (3 1) (6 3) (8 3) (9 3) (7 3)) ((5 5) (1 6) (7 5) (3 6) (6 5) (2 6) (9 5) (4 6)) ((7 5) (3 6) (8 5) (4 6) (5 5) (1 6) (9 5) (2 6)) ((8 5) (4 6) (6 5) (2 6) (7 5) (3 6) (9 5) (1 6)) ((6 5) (2 6) (5 5) (1 6) (8 5) (4 6) (9 5) (3 6)) ((2 5) (6 6) (4 5) (8 6) (1 5) (5 6) (9 5) (7 6)) ((4 5) (8 6) (3 5) (7 6) (2 5) (6 6) (1 5) (5 6)) ((3 5) (7 6) (1 5) (5 6) (4 5) (8 6) (9 5) (6 6)) ((1 5) (5 6) (2 5) (6 6) (3 5) (7 6) (9 5) (8 6))) solvedStates) == 9
+;; ; (solvedStateIndex '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (9 3)) solvedStates) == -1
 
-;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves.
+;Solves a rubiks cube using breadth first search. Can solve up to roughly 7 moves in reasonable time.
+;___________NOTE: ***This function is TAIL RECURSIVE***___________
+; ___proof: trace output___
+; (trace solveCube)
+; (solveCube solvedStates (rotate "xyzXXyZ" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | > (solveCube '(((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3)) ((3 1) (1 1) (4 1) (2 1) (7 3)...
+; | ("z" "Y" "x" "x" "Z" "Y" "X")
+; ("z" "Y" "x" "x" "Z" "Y" "X") 
 (define (solveCube solved initial n)
-    ;'("Z", "Y", "X") ;;; *TODO* ;;;
-    ;(genStates n initial '())
-    
     (let (
             (statesAtDepth (genStates n initial '()))
          )
-         ;statesAtDepth
+         
          (let
             (
                 (solutionIndex (solvedStateIndex (list-ref statesAtDepth 0) solvedStates))
                 (movesList (list-ref statesAtDepth 1))
             )
             
-            ;(list-ref movesList solutionIndex)
+            ;check if any of the states at this depth are solutions
             (if (not (eq? solutionIndex -1))
                 ;we have found a valid solution at solutionIndex
                 (list-ref movesList solutionIndex)
                 
                 ;no Solution at this depth, so check next step
-                ;TODO maybe just send in this step as initial with n still = 0?
                 (solveCube solved initial (+ n 1))
             )
          )
     )
 )
-;---------------------------------------------------------------------
-;TESTS
-; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
-; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;; ;TESTS
+;; ; (print (equal? '("Z" "Y" "X") (solveCube solvedStates (rotate "xyz" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
+;; ; (print (equal? '("X") (solveCube solvedStates (rotate "x" '((1 1) (2 1) (3 1) (4 1) (5 3) (6 3) (7 3) (8 3))) 0)) "\n")
 ;---------------------------------------------------------------------
