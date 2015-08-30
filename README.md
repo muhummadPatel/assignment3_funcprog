@@ -10,10 +10,11 @@
 ###Description:
 This assignment involved using Scheme to write a functional program to solve a
 2x2x2 spherical rubiks cube.
+
 * The _source code_ for the solution is provided in the assignment3.scm file. 
 * The _answers to the theoretical questions_ are provided in the 
   theoryAnswers.pdf file.
-* _Unit testing_ for each procedure is provided in the comments below the 
+* _Unit testing for each procedure_ is provided in the comments below the 
   defintion of that procedure.
 
 
