@@ -25,6 +25,7 @@ This assignment involved using Scheme to write a functional program to solve a
 
 ###Running the solution:
 The solution may be run in a command-line/terminal window as follows:
+
 * Navigate to the directory containing this file and the assignment3.scm file
 * Type 'gsi' and enter to run the Gambit Scheme interpreter
 * Type '(load "Assignment3.scm")' to load the code in Assignment3.scm
